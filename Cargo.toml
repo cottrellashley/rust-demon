@@ -1,0 +1,9 @@
+[package]
+name = "rusticles"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ggez = "0.7"  # or the latest version available
+rand = "0.8"
+log = "0.4.27"
