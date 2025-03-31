@@ -34,7 +34,7 @@ impl EventHandler for MainState {
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         // Clear the screen with a white background.
-        graphics::clear(ctx, Color::from_rgb(255, 255, 255));
+        graphics::clear(ctx, Color::from_rgb(0, 0, 0));
 
         // Draw the textbox border.
         let textbox_border = MeshBuilder::new()

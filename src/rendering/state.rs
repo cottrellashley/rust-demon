@@ -10,11 +10,15 @@ pub struct MainState {
     pub particles: Vec<Particle>,
     pub container: ParticleContainer,
     pub law: InteractionLawType,
+    pub slider_value: f32,
+    pub paused: bool,
 }
 
 impl MainState {
     pub fn new(ctx: &mut Context, num: u32, law: InteractionLawType) -> GameResult<MainState> {
         let (screen_width, screen_height) = graphics::drawable_size(ctx);
+        let paused = false;
+        let slider_value = 50.0;
         let container = ParticleContainer::new(Vector4 {
             x: 0.0,
             y: 0.0,
@@ -26,7 +30,17 @@ impl MainState {
         for _ in 0..num {
             particles.push(Particle::new(&container));
         }
-        Ok(MainState { particles, container, law })
+        Ok(MainState { particles, container, law, slider_value, paused})
+    }
+
+    pub fn pause_play(&mut self) {
+        self.paused = !self.paused ;
+    }
+
+    pub fn update_state(&mut self, ctx: &mut Context) -> GameResult<()>  {
+        let dt = ggez::timer::delta(ctx).as_secs_f32();
+        self.compute_single_interaction(dt);
+        Ok(())
     }
 
     pub fn average_kinetic_energy(&self) -> f32 {
@@ -41,10 +55,9 @@ impl MainState {
     pub fn compute_single_interaction(&mut self, dt: f32) {
         let law_type: InteractionLawType = self.law;
         let law: Box<dyn InteractionLaw> = build_interaction_law(law_type);
-        // Update each particle and check physics boundaries.
+
         for particle in &mut self.particles {
-            particle.update(dt);
-            self.container.collision(particle);
+            particle.reset_force()
         }
 
         // Check and resolve collisions between particles.
@@ -57,6 +70,12 @@ impl MainState {
                 let particle_j: &mut Particle = &mut right[0];
                 law.resolve(particle_i, particle_j);
             }
+        }
+
+        // Update each particle and check physics boundaries.
+        for particle in &mut self.particles {
+            particle.update(dt);
+            self.container.collision(particle);
         }
     }
 }

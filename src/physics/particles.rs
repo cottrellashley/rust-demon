@@ -11,7 +11,8 @@ pub struct Particle {
     pub velocity: Vector2<f32>,
     pub force: Vector2<f32>,
     pub radius: f32,
-    // pub mass: f32, // For later... we now assume unit mass for all.
+    pub charge: f32,
+    pub mass: f32
 }
 
 
@@ -22,19 +23,26 @@ impl Particle {
         let radius = 5.0;
         let x = rng.gen_range(radius..container.boundaries.w - radius);
         let y = rng.gen_range(radius..container.boundaries.z - radius);
-
+        let charge = 0.0;
+        let mass = 1.0;
         let velocity = random_vector(250.0, 50.0);
         Particle {
             position: Vector2 { x, y },
             velocity: velocity,
             force: Vector2 { x: 0.0, y: 0.0 },
             radius,
+            charge,
+            mass
         }
     }
 
     fn update_position(&mut self, dt: f32) {
         self.position.x += self.velocity.x * dt;
         self.position.y += self.velocity.y * dt;
+    }
+
+    pub fn reset_force(&mut self) {
+        self.force = Vector2 { x: 0.0, y: 0.0 };
     }
 
     fn update_velocity(&mut self, _dt: f32) {
@@ -65,12 +73,17 @@ impl Particle {
         // Normalize kinetic energy so an average particle roughly maps to 50.
         let normalized = if *avg > 0.0 { (self_ke / *avg) * 50.0 } else { 0.0 };
         let t = normalized.clamp(0.0, 100.0);
-
+        // rgb(100,136,234)
         // Define anchor colors with explicit f32 annotations.
-        let blue: (f32, f32, f32)   = (0.0_f32,   0.0_f32, 255.0_f32);
-        let yellow: (f32, f32, f32) = (255.0_f32, 255.0_f32,   0.0_f32);
-        let orange: (f32, f32, f32) = (255.0_f32, 165.0_f32,   0.0_f32);
-        let red: (f32, f32, f32)    = (255.0_f32,   0.0_f32,   0.0_f32);
+        // Sky Blue: RGB (175, 218, 237)
+        // Pale Yellow: RGB (255, 245, 205)
+        // Coral Orange: RGB (255, 135, 117)
+        // Lavender Red: RGB (216, 160, 198
+
+        let blue: (f32, f32, f32)   = (175.0_f32,   218.0_f32, 237.0_f32);
+        let yellow: (f32, f32, f32) = (255.0_f32, 245.0_f32,   205.0_f32);
+        let orange: (f32, f32, f32) = (255.0_f32, 135.0_f32,   117.0_f32);
+        let red: (f32, f32, f32)    = (216.0_f32,   160.0_f32,   198.0_f32);
 
         // Smoothstep function for smooth interpolation.
         let smoothstep = |edge0: f32, edge1: f32, x: f32| -> f32 {

@@ -115,8 +115,8 @@ impl InteractionLaw for CoulombLaw {
     fn resolve(&self, particle1: &mut Particle, particle2: &mut Particle) -> bool {
         // Here we use hard-coded charges for demonstration.
         // In a full implementation, these would come from the Particle's properties.
-        let p1_charge = 0.0001234;
-        let p2_charge = 0.0001234;
+        let p1_charge = 0.001234;
+        let p2_charge = 0.001234;
 
         // Calculate the displacement vector from particle1 to particle2.
         let dx = particle2.position.x - particle1.position.x;
@@ -255,7 +255,7 @@ pub fn build_interaction_law(law_type: InteractionLawType) -> Box<dyn Interactio
     match law_type {
         InteractionLawType::CoulombLaw => {
             // For example, use a Coulomb constant and softening parameter.
-            Box::new(CoulombLaw::new(8.9875517923e8, 0.001, 5.0))
+            Box::new(CoulombLaw::new(8.9875517923e9, 0.001, 5.0))
         }
         InteractionLawType::ImpulseCollision => {
             // For example, use restitution, correction_factor, and penetration_slop.
