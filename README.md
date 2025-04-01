@@ -1,5 +1,11 @@
 # Physics Sim
 
-This projects is an implementation a full simulation of Maxwell's Demon in rust. I have written all the physics simulation myself as a learning execise.
+This projects is an implementation a full interactive simulation of Maxwell's Demon in rust.
+
+You can:
+- Play/Pause (space-bar)
+- Move Frame-by-frame (right key)
+- Turn on demon (Right mouse click)
+- Turn off demon (Left mouse click)
 
 <img src="docs/sim.gif" alt="Simulation">
