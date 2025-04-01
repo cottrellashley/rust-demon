@@ -50,7 +50,7 @@ impl ParticleContainer {
                 particle.velocity.x *= -1.0;
             }
             // <- only if speed >= 80.0
-            else if particle.velocity.x >= 0.0 && speed > 140.0 {
+            else if particle.velocity.x >= 0.0 && speed > 10.0 {
                 particle.position.x -= particle.radius;
                 particle.velocity.x *= -1.0;
             }

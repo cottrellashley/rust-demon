@@ -47,7 +47,7 @@ impl Particle {
 
     fn update_velocity(&mut self, _dt: f32) {
         // Velocity remains constant; you could add acceleration here if desired.
-        self.velocity.y += 9.81 * _dt;
+        self.velocity.y += 0.0 * _dt;
         self.velocity.y += self.force.y * _dt;
         self.velocity.x += self.force.x * _dt;
     }

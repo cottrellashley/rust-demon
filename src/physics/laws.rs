@@ -131,6 +131,10 @@ impl InteractionLaw for CoulombLaw {
             return true;
         }
 
+        if distance_sq < particle1.radius * 0.1 {
+            distance_sq = particle1.radius * 0.1;
+        }
+
         // Compute the force magnitude.
         // The sign of (p1_charge * p2_charge) will determine whether the force is attractive or repulsive.
         let force_magnitude = self.k * (p1_charge * p2_charge) / distance_sq;
@@ -255,7 +259,7 @@ pub fn build_interaction_law(law_type: InteractionLawType) -> Box<dyn Interactio
     match law_type {
         InteractionLawType::CoulombLaw => {
             // For example, use a Coulomb constant and softening parameter.
-            Box::new(CoulombLaw::new(8.9875517923e9, 0.001, 5.0))
+            Box::new(CoulombLaw::new(8.9875517923e9, 0.001, 2000.0))
         }
         InteractionLawType::ImpulseCollision => {
             // For example, use restitution, correction_factor, and penetration_slop.

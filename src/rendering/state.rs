@@ -39,7 +39,13 @@ impl MainState {
 
     pub fn update_state(&mut self, ctx: &mut Context) -> GameResult<()>  {
         let dt = ggez::timer::delta(ctx).as_secs_f32();
-        self.compute_single_interaction(dt);
+
+        let new_dt = dt / 20.0;
+        let mut i = 0;
+        while i < 20 {
+            self.compute_single_interaction(new_dt);
+            i = i + 1;
+        }
         Ok(())
     }
 
